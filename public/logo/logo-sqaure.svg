@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="128" height="128" viewBox="0 0 128 128">
+  <g id="logo-sqaure" transform="translate(-3478 3856)">
+    <rect id="Rectangle_43" data-name="Rectangle 43" width="128" height="128" transform="translate(3478 -3856)" fill="#3ecc5e"/>
+    <text id="BSH.G" transform="translate(3502 -3787)" fill="#fafafa" font-size="28" font-family="Ubuntu-Regular, Ubuntu"><tspan x="0" y="0">BSH.G</tspan></text>
+    <text id="Code_Generator" data-name="Code Generator" transform="translate(3505 -3774)" fill="#fafafa" font-size="10" font-family="Ubuntu-Regular, Ubuntu"><tspan x="0" y="0">Code Generator</tspan></text>
+  </g>
+</svg>
