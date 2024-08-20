@@ -1,0 +1,11 @@
+{
+  "string": "String",
+  "number": "Number",
+  "datetime": "DateTime",
+  "date": "Date",
+  "time": "Time",
+  "boolean": "Boolean",
+  "array": "Arrays",
+  "custom-validation-rule": "Custom Validation Rule",
+  "custom-validation-mthod": "Custom Validation Method"
+}

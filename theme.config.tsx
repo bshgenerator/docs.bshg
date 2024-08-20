@@ -76,7 +76,12 @@ const config: DocsThemeConfig = {
             <meta name="description" content="Welcome to @bshg/validation, a versatile TypeScript library crafted for seamless data validation within your projects. Whether you're working on a front-end or back-end application, this library empowers you to validate data in a declarative manner, ensuring your objects align with your expectations."/>
             <link rel="icon" href="/favicon.ico"/>
         </>
-    )
+    ),
+    useNextSeoProps() {
+        return {
+            titleTemplate: 'BSH.G | %s'
+        }
+    },
 }
 
 export default config

@@ -1,3 +1,12 @@
 {
-  "changelog": "Change Logs"
+  "installation": "Installation",
+  "changelog": {
+    "title": "Change Logs",
+    "display": "hidden"
+  },
+  "basic-usage": "Basic Usage",
+  "v-validator": "create validators",
+  "validator-methods": {
+    "title": "Validator Methods"
+  }
 }
