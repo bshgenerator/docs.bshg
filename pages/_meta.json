@@ -1,10 +1,4 @@
 {
   "index": "Introduction",
-  "validation-lib": "Validation Library",
-  "contact": {
-    "title": "Contact ↗",
-    "type": "page",
-    "href": "mailto:bsh.generator@gmail.com",
-    "newWindow": true
-  }
+  "validation-lib": "Validation Library"
 }
