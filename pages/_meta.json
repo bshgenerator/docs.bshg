@@ -1,7 +1,14 @@
 {
   "index": {
-    "title": "BSH Code Generation",
-    "type": "page"
+    "type": "page",
+    "display": "hidden"
   },
-  "validation-lib": "Validation Library"
+  "docs": {
+    "type": "page",
+    "title": "Docs"
+  },
+  "ts-validation": {
+    "type": "page",
+    "display": "hidden"
+  }
 }

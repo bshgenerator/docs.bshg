@@ -1,8 +1,6 @@
 {
-  "installation": "Installation",
-  "changelog": {
-    "title": "Change Logs",
-    "display": "hidden"
+  "index": {
+    "title": "Overview"
   },
   "basic-usage": "Basic Usage",
   "v-validator": "create validators",
