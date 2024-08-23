@@ -1,4 +1,7 @@
 {
-  "index": "Introduction",
+  "index": {
+    "title": "BSH Code Generation",
+    "type": "page"
+  },
   "validation-lib": "Validation Library"
 }

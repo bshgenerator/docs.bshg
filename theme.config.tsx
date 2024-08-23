@@ -1,8 +1,10 @@
 import React from 'react'
 import {DocsThemeConfig} from 'nextra-theme-docs'
 import {BugIcon, FeedbackIcon, GitHubIcon, Logo, SupportIcon} from "./icons";
+import Main from './components/main/Main';
 
 const config: DocsThemeConfig = {
+
     banner: {
         // key: '2.0-release',
         // text: (
@@ -64,10 +66,12 @@ const config: DocsThemeConfig = {
         extraContent: (
             <div style={{display: 'flex', gap: '1rem'}}>
                 <a href="mailto:support@yourdomain.com" title="Contact Support"><SupportIcon/></a>
-                <a href="https://yourfeedbackform.com" title="Send Feedback" target="_blank" rel="noopener noreferrer"><FeedbackIcon/></a>
+                <a href="https://yourfeedbackform.com" title="Send Feedback" target="_blank"
+                   rel="noopener noreferrer"><FeedbackIcon/></a>
             </div>
         ),
     },
+    main: ({children}) => <Main>{children}</Main>
 }
 
 export default config
