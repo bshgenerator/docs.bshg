@@ -6,5 +6,10 @@
   "v-validator": "create validators",
   "validator-methods": {
     "title": "Validator Methods"
+  },
+  "working-on": {
+    "type": "page",
+    "display": "hidden",
+    "title": "Working on it"
   }
 }

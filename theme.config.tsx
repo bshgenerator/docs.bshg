@@ -4,7 +4,6 @@ import {BugIcon, FeedbackIcon, GitHubIcon, Logo, SupportIcon} from "./icons";
 import Main from './components/main/Main';
 
 const config: DocsThemeConfig = {
-
     banner: {
         // key: '2.0-release',
         // text: (
@@ -37,7 +36,6 @@ const config: DocsThemeConfig = {
         }><BugIcon width={16}/> Send Issue</small></>,
         labels: "enhancement",
         useLink: (...args) => {
-            console.log('args', args)
             return "https://github.com/bsh-generator/bshg_validation_ts/issues"
         }
     },
@@ -71,7 +69,12 @@ const config: DocsThemeConfig = {
             </div>
         ),
     },
-    main: ({children}) => <Main>{children}</Main>
+    main: ({children}) => <Main>{children}</Main>,
+    toc: {
+        float: true,
+        title: undefined,
+        backToTop: true
+    }
 }
 
 export default config
