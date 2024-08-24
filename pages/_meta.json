@@ -4,8 +4,18 @@
     "display": "hidden"
   },
   "docs": {
-    "type": "page",
-    "title": "Docs"
+    "type": "menu",
+    "title": "Docs",
+    "items": {
+      "all": {
+        "title": "all",
+        "href": "/docs"
+      },
+      "ts-validation": {
+        "title": "Ts Validation",
+        "href": "/ts-validation"
+      }
+    }
   },
   "blogs": {
     "type": "page",

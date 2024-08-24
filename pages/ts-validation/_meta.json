@@ -1,15 +1,7 @@
 {
-  "index": {
-    "title": "Overview"
-  },
-  "basic-usage": "Basic Usage",
-  "v-validator": "create validators",
-  "validator-methods": {
-    "title": "Validator Methods"
-  },
-  "working-on": {
-    "type": "page",
-    "display": "hidden",
-    "title": "Working on it"
-  }
+  "index": "Overview",
+  "1-basic-usage": "Basic Usage",
+  "2-v-validator": "Create Validators",
+  "3-validator-methods": "Validator Methods",
+  "4-define-rules": "Define Rules"
 }
