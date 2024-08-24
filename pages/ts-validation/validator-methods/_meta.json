@@ -1,4 +1,8 @@
 {
+  "index": {
+    "title": "Validator Methods",
+    "display": "hidden"
+  },
   "string": "String",
   "number": "Number",
   "datetime": "DateTime",

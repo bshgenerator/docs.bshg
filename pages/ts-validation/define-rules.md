@@ -6,7 +6,7 @@ sidebar_position: 6
 
 ## Simple Fields
 
-You can define validation rules for simple fields using the `items` property of the [ValidatorConfig](/ts-validation/2-v-validator#config-param-validatorconfig). This property accepts an object where you specify the fields to validate. The object should include only the fields of the type passed to [`v.validator<Type>`](/ts-validation/2-v-validator). Each field is of type `ItemType`.
+You can define validation rules for simple fields using the `items` property of the [ValidatorConfig](/ts-validation/v-validator#config-param-validatorconfig). This property accepts an object where you specify the fields to validate. The object should include only the fields of the type passed to [`v.validator<Type>`](/ts-validation/v-validator). Each field is of type `ItemType`.
 
 ```typescript
 type ItemType<T, TContext> = {
@@ -27,7 +27,7 @@ Here's how you can define validation rules for individual fields:
 In this structure:
 
 - `validatorMethod` refers to predefined methods provided by the library (`v`) to create `TypeValidator` objects containing validation rules.
-- `rule1`, `rule2`, etc., are methods or functions chained together to specify validation criteria such as required fields, string length, format, etc. [(read more)](/docs/category/validator-methods)
+- `rule1`, `rule2`, etc., are methods or functions chained together to specify validation criteria such as required fields, string length, format, etc. [(read more)](/ts-validation/validator-methods)
 
 This approach allows you to configure detailed validation requirements for each field in your data type, ensuring data integrity and consistency in your application.
 
@@ -58,7 +58,7 @@ To define rules for nested objects in your data, there are two approaches:
 
 #### 1. Using the `nested` Property
 
-One way to validate nested objects is to create their own validators and then pass them in the `nested` property of the [ValidatorConfig](/docs/library/validation/typescrip/v-validator#config-param-validatorconfig).
+One way to validate nested objects is to create their own validators and then pass them in the `nested` property of the [ValidatorConfig](/ts-validation/v-validator#config-param-validatorconfig).
 
 ```typescript
 const childValidator = v.validator<ChildType>({
@@ -85,7 +85,7 @@ Using this approach allows for modular and reusable validation logic, especially
 
 #### 2. Using the `items` Property
 
-Another approach to validate nested objects is by using `v.custom()` within the `items` property of the [ValidatorConfig](/docs/library/validation/typescrip/v-validator#config-param-validatorconfig). This method allows you to validate nested objects without needing to create separate validators for them.
+Another approach to validate nested objects is by using `v.custom()` within the `items` property of the [ValidatorConfig](/ts-validation/v-validator#config-param-validatorconfig). This method allows you to validate nested objects without needing to create separate validators for them.
 
 ```typescript
 v.validator<ParentType>({

@@ -1,0 +1,119 @@
+# Create Validator
+
+import { Tabs } from 'nextra/components'
+
+<Tabs items={['FEATURES', 'API', 'EXAMPLE']}>
+    <Tabs.Tab>
+In `@bshg/validation` the api that is responsible of validate the data is called `Validator`, this one is provide a lot of build in functionality to do the validation and more.
+
+The `v.validator()` function is the core method that allows you to create validators for your data types. As seen in the previous [Basic Usage](/ts-validation/basic-usage) example with the `User` type, this function requires the data type and accepts a configuration object as a parameter.
+
+### Function Signature
+
+```typescript {5} /config: ValidatorConfig<Type, TContext>/ /Validator<Type, TContext>/ copy=false
+function validator<Type, TContext>(config: ValidatorConfig<Type, TContext>): Validator<Type, TContext> {}
+```
+
+### Config Param: `ValidatorConfig`
+
+The configuration object for `v.validator()` has the following structure:
+
+```typescript copy=false
+type ValidatorConfig<TV, TContext> = {
+    id?: string,
+    items?: ItemType<TV, TContext>,
+    nested?: NestedType<TV>,
+    options?: ValidatorOptions
+}
+```
+
+| Property  | Type                     | Description                                                                                                                                                                                              |
+|-----------|--------------------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `id`      | `string`                 | An optional identifier for the validator. This can be useful if you need to distinguish between multiple validators in your application. It is used to differentiate between the logs of the validators. |
+| `items`   | `ItemType<TV, TContext>` | Defines the validation rules for the individual fields of your data type. This is where you specify the constraints and requirements for each property of your data type.                                |
+| `nested`  | `NestedType<TV>`         | Allows you to define nested validation rules if your data type contains nested objects that also need validation.                                                                                        |
+| `options` | `ValidatorOptions`       | Additional options to configure the behavior of the validator.                                                                                                                                           |
+
+> **Note:** `TContext` is used to pass a type of the [context](/docs/library/validation/typescrip/context-validation).
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ### Validator
+        the primary class of this library designed for comprehensive data validation. This class provides a robust set of methods and options to effectively manage and validate your data structures.<br/>
+        It is created using the `v.validator()` function and accepts a configuration object as an argument.
+
+        #### Properties
+
+| Property   | Description                                                                                           |
+|------------|-------------------------------------------------------------------------------------------------------|
+| **items**  | Retrieves the validation items to inspect their status, results, or to control them programmatically. |
+| **nested** | Accesses nested validations to manage their status, results, or to control them as needed.            |
+
+
+        #### Methods
+
+| Method                                 | Description                                                                                                                             |
+|----------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------|
+| **options(options: ValidatorOptions)** | Updates the validator's configuration options after instantiation. [See options](/docs/library/validation/typescrip/validator-options)  |
+| **allGood()**                          | Checks if all validations pass. Returns `true` if all validations are successful, otherwise `false`.                                    |
+| **applyAll()**                         | Executes all defined validations on the items specified within the validator configuration.                                             |
+| **applyAllAsync()**                    | Asynchronously applies all validations on the items specified within the validator.                                                     |
+| **reset()**                            | Resets the state of validations, clearing all previous results and errors.                                                              |
+| **init(getter: () => T)**              | Initializes the validator with a `getter` function to retrieve the latest state of the data to be validated.                            |
+| **withContext(context: TContext)**     | Provides a context object to the validator, enabling contextual validations.                                                            |
+| **validate(data?: T)**                 | Synchronously validates the provided object or uses the current `getter` value if no argument is provided.                              |
+| **validateInfo(data?: T)**             | Similar to `validate(data?)`, but returns an object containing the validation status and detailed results.                              |
+| **validateThrow(data?: T)**            | Similar to `validate(data?)`, but throws an error if any validation fails, providing comprehensive error information.                   |
+| **import(errors: ValidatorResult)**    | Imports a list of errors into the validator to manage or display validation failures effectively.                                       |
+
+        The `Validator<T>` class offers a versatile and powerful solution for validating complex data structures. By leveraging its methods and properties, developers can ensure data integrity, manage validation outcomes effectively, and handle validation errors with precision. Whether validating single objects or batches, the `Validator` class provides the flexibility and reliability required for robust data validation in various application scenarios.
+    </Tabs.Tab>
+    <Tabs.Tab>
+        1. Data Types:
+
+        ```typescript
+        type Profile = {
+            fullname: string;
+            age: number;
+        }
+
+        type User = {
+            email: string;
+            password: string;
+            profile: Profile;
+        }
+        ```
+
+        2. Define The Validator:
+
+        ```typescript {1,4,6,7,12,14,15,18}
+        import { v } from '@bshg/validation';
+
+        const profileValidator = v.validator<Profile>({
+            id: 'profileValidator',
+            items: {
+                fullname: v.string().required(),
+                age: v.number().required().positive(),
+            },
+        });
+
+        const userValidator = v.validator<User>({
+            id: 'userValidator',
+            items: {
+                email: v.string().required().email(),
+                password: v.string().required().min(8),
+            },
+            nested: {
+                profile: profileValidator,
+            }
+        });
+        ```
+
+        In this example:
+
+        - `profileValidator` is used within `userValidator` to validate nested objects.
+        - The `id` property is specified to distinguish between different validators and manage their logs effectively.
+        - The `items` property defines validation rules for individual fields.
+        - The `nested` property allows for the inclusion of validators for nested objects.
+        - The `options` property can be used for additional configurations to fine-tune the validator's behavior.
+    </Tabs.Tab>
+</Tabs>
