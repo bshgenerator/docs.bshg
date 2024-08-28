@@ -1,0 +1,49 @@
+import { Callout } from 'nextra/components'
+import { Tabs } from 'nextra/components'
+
+# How To Access the Proper Status?
+
+<Tabs items={['FEATURES', 'API']}>
+<Tabs.Tab>
+You can access your object property status, either to read it or to do some other action with it, and there are two ways to do it:
+
+### 1. Using provided methods:
+
+the `Validator` class provides the following methods for accessing the property status:
+
+| method              | return               | description                                 |
+|---------------------|----------------------|---------------------------------------------|
+| `validateItem(key)` | void                 | validate the item passed                    |
+| `isItemValid(key)`  | boolean \| undefined | check if the item is valid                  |
+| `itemMessage(key)`  | string \| undefined  | return the message if the item is not valid |
+
+### 2. Directly from `.items` and `.nested` properties:
+
+to access the property status, you can use the `.items` and `.nested` properties directly of the validator
+
+```typescript
+validator.items.property.<action>;
+validator.nested.nestedProprty.items.property.<Ta>;
+```
+
+action is a function (or property) you want to access to, the item properties are of type `ValidatorItem`.
+</Tabs.Tab>
+
+<Tabs.Tab>
+### ValidatorItem API
+The `ValidatorItem<T>` class is designed to encapsulate the validation state and behavior for individual properties within data structures. It integrates seamlessly with validation methods such as `v.string()`, `v.number()`, `v.boolean()`, `v.array()`, and `v.custom<T>()`, providing comprehensive management and access to validation results.
+
+| Property/Method              | Description                                                                                                       |
+|------------------------------|-------------------------------------------------------------------------------------------------------------------|
+| **`valid`**                  | Returns `true` if the value is valid, `false` if invalid, and `undefined` if not yet validated.                   |
+| **`name`**                   | The name of the field or property associated with this `ValidatorItem`.                                           |
+| **`message`**                | The error message associated with validation failures.                                                            |
+| **`get(): T`**               | Retrieves the current value of the property being validated.                                                      |
+| **`set(value: T)`**          | Updates the value of the property being validated.                                                                |
+| **`error(message: string)`** | Marks the validation state of the item as `false` and sets the error message.                                     |
+| **`reset()`**                | Resets the validation state of the item to `undefined`, allowing for re-evaluation during subsequent validations. |
+
+The `ValidatorItem<T>` class provides a structured approach to managing validation states and results for individual properties within your data structures. By using these properties and methods, you can effectively handle validation outcomes, track field-specific errors, and ensure data integrity throughout your application. Integrate `ValidatorItem<T>` seamlessly with the validation methods offered by this library to enhance the reliability and accuracy of your data validation processes.
+</Tabs.Tab>
+
+</Tabs>

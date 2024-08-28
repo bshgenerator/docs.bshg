@@ -3,5 +3,9 @@
   "basic-usage": "Basic Usage",
   "v-validator": "Create Validators",
   "define-rules": "Define Rules",
-  "validator-methods": "Validator Methods"
+  "validator-methods": "Validator Methods",
+  "validator-options": "Validator Options",
+  "how-to-validate-objects": "How To Validate?",
+  "real-time-validation": "How To Validate In Real-Time?",
+  "property-status-access": "Access the Proper Status"
 }
