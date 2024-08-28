@@ -4,5 +4,6 @@
   "v-validator": "Create Validators",
   "define-rules": "Define Rules",
   "validator-methods": "Validator Methods",
-  "validator-options.mdx": "Validator Options"
+  "validator-options": "Validator Options",
+  "how-to-validate-objects": "How To Validate?"
 }

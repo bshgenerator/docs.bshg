@@ -1,0 +1,91 @@
+import { Callout } from 'nextra/components'
+import { Tabs } from 'nextra/components'
+
+<Tabs items={['FEATURES', 'API']}>
+<Tabs.Tab>
+    # How To Validate Objects?
+
+    When validating objects, ensuring they conform to the expected schema is essential. Here, we present three methods for handling validation results, each offering a different approach to error handling and result management.
+
+    ### 1. `validate()`: Simple Boolean Check
+
+    The `validate()` method returns a boolean value indicating whether the validation passed or failed. This method is straightforward and suitable when only the validation outcome is needed, without detailed information about the validation results.
+
+    ```typescript
+    const result = userValidator.validate();
+
+    if (result) {
+      console.log('Validation passed!');
+    } else {
+      console.log('Validation failed.');
+    }
+    ```
+
+    ### 2. `validateInfo()`: Detailed Validation Results
+
+    The `validateInfo()` method returns an object with `success` and `results` properties. These results are of type `ValidatorResult`, providing detailed information about why the validation failed, enabling precise error handling.
+
+    ```typescript
+    const validationResult = userValidator.validateInfo();
+
+    if (validationResult.success) {
+      console.log('Validation passed!');
+    } else {
+      console.log('Validation failed.');
+      console.log('Validation errors:', validationResult.results);
+    }
+    ```
+
+    ### 3. `validateThrow()`: Throwing Errors on Validation Failure
+
+    The `validateThrow()` method throws a `BshValidationError` error if the validation fails. This method is useful for handling validation errors using exception handling mechanisms.
+
+    ```typescript
+    try {
+      userValidator.validateThrow();
+      console.log('Validation passed!');
+    } catch (e) {
+      const validationError = e as BshValidationError;
+      console.log('Validation failed.');
+      console.log('Validation errors:', validationError.results);
+    ```
+
+</Tabs.Tab>
+
+<Tabs.Tab>
+    ### `ValidatorResult`
+    if you set the `resultType` [option](/ts-validation/validator-options) to `object` <i>(default)</i>,  the result will be like:
+    ```typescript
+    type ValidatorResult<Type> = {
+        items?: {
+            field: string
+            value?: T
+            valid?: boolean
+            message?: string
+        }[],
+        nested?: ValidatorResult<NestedType>
+    }
+    ```
+
+    and if you choose the `array` [option](/ts-validation/validator-options), the result will be like:
+    ```typescript
+    type ValidatorResult<Type> = {
+        items?: {
+            field: string
+            value?: T
+            valid?: boolean
+            message?: string
+        }[],
+        nested?: {
+            field: string,
+            result?: ValidatorResult<NestedType>
+        }
+    }
+    ```
+
+    <Callout type="warning">
+        <em>Note:</em> The <code>resultsType</code> [option](/ts-validation/validator-options) has been added to support projects using multiple programming languages (not just TypeScript). It may be removed in future versions once other language versions (such as Java) are stabilized.
+    </Callout>
+</Tabs.Tab>
+
+</Tabs>
