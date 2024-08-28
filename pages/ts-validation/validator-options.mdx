@@ -1,0 +1,25 @@
+import { Callout } from 'nextra/components'
+
+## Validator Options
+
+The validator in this library provides customizable behavior through the `options` object, which can be passed during initialization in the `options` property of [`v.validator()`](/docs/library/validation/typescrip/v-validator).
+
+### Available Options:
+
+- **`dev?: boolean`**
+- Enables debug mode when set to `true`. In debug mode, the validator logs detailed messages to the console to assist with troubleshooting.
+- **Default Value:** `false`
+
+- **`resultsType?: "array" | "object"`**
+- Determines the structure used for storing nested validation results:
+- `"array"`: Nested validation results are stored in arrays.
+- `"object"`: Nested validation results are stored in objects.
+- **Default Value:** `"object"`
+
+<Callout type="warning">
+    <em>Note:</em> The <code>resultsType</code> option has been added to support projects using multiple programming languages (not just TypeScript). It may be removed in future versions once other language versions (such as Java) are stabilized.
+</Callout>
+
+<Callout type="info">
+    <em>Recommendation:</em> If you are working exclusively with TypeScript, we recommend using <code>"object"</code> for <code>resultsType</code>.
+</Callout>

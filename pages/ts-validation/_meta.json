@@ -3,5 +3,6 @@
   "basic-usage": "Basic Usage",
   "v-validator": "Create Validators",
   "define-rules": "Define Rules",
-  "validator-methods": "Validator Methods"
+  "validator-methods": "Validator Methods",
+  "validator-options.mdx": "Validator Options"
 }
