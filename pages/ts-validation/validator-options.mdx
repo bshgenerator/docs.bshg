@@ -6,15 +6,11 @@ The validator in this library provides customizable behavior through the `option
 
 ### Available Options:
 
-- **`dev?: boolean`**
-- Enables debug mode when set to `true`. In debug mode, the validator logs detailed messages to the console to assist with troubleshooting.
-- **Default Value:** `false`
 
-- **`resultsType?: "array" | "object"`**
-- Determines the structure used for storing nested validation results:
-- `"array"`: Nested validation results are stored in arrays.
-- `"object"`: Nested validation results are stored in objects.
-- **Default Value:** `"object"`
+| Option      | Default    | Description                                                                                                                                                                                                                   |
+|-------------|------------|-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| dev         | `false`    | Enables debug mode when set to `true`. In debug mode, the validator logs detailed messages to the console to assist with troubleshooting.                                                                                     |
+| resultsType | `"object"` | Determines the structure used for storing nested validation results:<br/> <code>"array"</code>: Nested validation results are stored in arrays. <br/> <code>"object"</code>: Nested validation results are stored in objects. |
 
 <Callout type="warning">
     <em>Note:</em> The <code>resultsType</code> option has been added to support projects using multiple programming languages (not just TypeScript). It may be removed in future versions once other language versions (such as Java) are stabilized.

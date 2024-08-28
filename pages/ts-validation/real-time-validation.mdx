@@ -1,0 +1,148 @@
+import { Callout } from 'nextra/components'
+import { Tabs } from 'nextra/components'
+
+# How To Use Real-Time Validation?
+
+<Tabs items={['FEATURES', 'EXAMPLE']}>
+<Tabs.Tab>
+    Real-time validation is crucial for validating objects as they change dynamically, such as in user interfaces. This section outlines how to achieve real-time validation using the `init()` method to track object changes and validate individual properties using the Validator library.
+
+    ### Steps to Implement Real-Time Validation
+
+    1. **Define Data Types:**
+
+       Define TypeScript types for the objects you want to validate. For example:
+
+       ```typescript
+       type Profile = {
+         fullname: string;
+         age: number;
+       };
+
+       type User = {
+         email: string;
+         password: string;
+         profile: Profile;
+       };
+       ```
+
+    2. **Declare Validators:**
+
+       Create validators for each property and nested object using the Validator library:
+
+       ```typescript
+       const profileValidator = v.validator<Profile>({
+         id: 'profileValidator',
+         items: {
+           fullname: v.string().required(),
+           age: v.number().required().positive(),
+         },
+       });
+
+       const userValidator = v.validator<User>({
+         id: 'userValidator',
+         items: {
+           email: v.string().required().email(),
+           password: v.string().required().min(8),
+         },
+         nested: {
+           profile: profileValidator,
+         },
+       });
+       ```
+
+    3. **Initialize Object State:**
+
+       Use the `init()` method to initialize the validator with the current object state. This is essential for tracking changes and validating in real-time, especially useful in scenarios like form validations:
+
+       ```typescript {3}
+       const user = new User();
+
+       userValidator.init(() => user); // Initialize with a function to retrieve the current object state
+       ```
+
+    4. **Validate Single Property:**
+
+    You can validate a single property using the validator's: [read more here](/ts-validation/proprty-statuc-access)
+
+    - `validator.items.<property>.validate() {:ts}` method
+    - `validator.nested.<nested-property>.items.<property>.validate() {:ts}` method.
+
+    This allows you to validate specific fields as they are updated in the UI:
+
+     ```typescript /.items.email/ /.validate()/ /.valid/ /.message/
+     // Example to validate the 'email' property
+    const emailValidatorItem = userValidator.items.email;
+
+    emailValidatorItem.validate();
+
+    // Get validation status and error message
+    const isValid = emailValidatorItem.valid;
+    const errorMessage = emailValidatorItem.message;
+
+    // Update validation state if needed
+    if (!isValid) {
+      emailValidatorItem.error('Email is not valid!');
+    }
+     ```
+</Tabs.Tab>
+<Tabs.Tab>
+    Here's a complete example demonstrating real-time validation with the Validator library:
+
+    ```typescript
+    // Define Data Types
+    type Profile = {
+      fullname: string;
+      age: number;
+    };
+
+    type User = {
+      email: string;
+      password: string;
+      profile: Profile;
+    };
+
+    // Declare Validators
+    const profileValidator = v.validator<Profile>({
+      id: 'profileValidator',
+      items: {
+        fullname: v.string().required(),
+        age: v.number().required().positive(),
+      },
+    });
+
+    const userValidator = v.validator<User>({
+      id: 'userValidator',
+      items: {
+        email: v.string().required().email(),
+        password: v.string().required().min(8),
+      },
+      nested: {
+        profile: profileValidator,
+      },
+    });
+
+    // Initialize Object State
+    const user = new User();
+
+    userValidator.init(() => user); // Initialize with a function to retrieve the current object state
+
+    // Validate a Single Property
+    const emailValidatorItem = userValidator.items.email;
+
+    // Simulate change and validation
+    user.email = 'invalid-email'; // Assume user input
+
+    emailValidatorItem.validate();
+
+    // Get validation status and error message
+    const isValid = emailValidatorItem.valid;
+    const errorMessage = emailValidatorItem.message;
+
+    // Get validation status of proprerty of nested object
+    const isAgeValid = userValidator.nested.profile.items.age.valid;
+    ```
+</Tabs.Tab>
+</Tabs>
+
+By following these steps, you can implement robust real-time validation for your application using the Validator library, ensuring data integrity and user experience consistency. Adjust validations and error handling according to your specific application requirements for seamless integration and functionality.
