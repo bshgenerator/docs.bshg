@@ -17,7 +17,7 @@ export const Logo = () => (
             </g>
         </svg>
         <span style={{marginLeft: '.4em', fontWeight: 600}}>
-        BSH.G Code Generator - beta
+        BSH.G Code Generator
       </span>
     </>
 );
