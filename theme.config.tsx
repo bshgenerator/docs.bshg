@@ -5,12 +5,12 @@ import Main from './components/main/Main';
 
 const config: DocsThemeConfig = {
     banner: {
-        // key: '2.0-release',
-        // text: (
-        //     <a href="https://nextra.site" target="_blank">
-        //         🎉 Nextra 2.0 is released. Read more →
-        //     </a>
-        // )
+        key: 'This website is in progress, you can read the docs from old one',
+        text: (
+            <a href="https://bshg-validation-docs.onrender.com/docs/intro" target="_blank">
+                from Here →
+            </a>
+        )
     },
     logo: Logo,
     project: {link: 'https://github.com/bsh-generator', icon: <small title='On Github'><GitHubIcon/></small>},
