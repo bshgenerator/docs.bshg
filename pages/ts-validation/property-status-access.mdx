@@ -1,11 +1,12 @@
-import { Callout } from 'nextra/components'
-import { Tabs } from 'nextra/components'
+import { Tabs, Callout } from 'nextra/components'
 
-# How To Access the Proper Status?
+# How To Access the Validation Status?
 
-<Tabs items={['FEATURES', 'API']}>
+<Tabs items={['FEATURES', 'API', 'EXAMPLE']}>
 <Tabs.Tab>
-You can access your object property status, either to read it or to do some other action with it, and there are two ways to do it:
+You can access your object property status, either to read it or to do some action on it.
+
+<Callout type='info'>This will help you to use the validators inside your forms, [read more](/ts-validation/how-to-use-with-forms)</Callout>
 
 ### 1. Using provided methods:
 
@@ -27,6 +28,7 @@ validator.nested.nestedProprty.items.property.<Ta>;
 ```
 
 action is a function (or property) you want to access to, the item properties are of type `ValidatorItem`.
+
 </Tabs.Tab>
 
 <Tabs.Tab>
@@ -44,6 +46,45 @@ The `ValidatorItem<T>` class is designed to encapsulate the validation state and
 | **`reset()`**                | Resets the validation state of the item to `undefined`, allowing for re-evaluation during subsequent validations. |
 
 The `ValidatorItem<T>` class provides a structured approach to managing validation states and results for individual properties within your data structures. By using these properties and methods, you can effectively handle validation outcomes, track field-specific errors, and ensure data integrity throughout your application. Integrate `ValidatorItem<T>` seamlessly with the validation methods offered by this library to enhance the reliability and accuracy of your data validation processes.
+</Tabs.Tab>
+<Tabs.Tab>
+in this example we will use this simple User:
+```ts
+type User = {
+    username: string
+    email: string
+}
+```
+
+then we create tow validators for them:
+```ts {4-5}
+const userValidator = v.validator<User>({
+    id: "userValidator",
+    items: {
+        email: v.string().required().email(),
+        username: v.string().required().notEmpty(),
+    }
+});
+```
+
+after that we are using <a href="/ts-validation/real-time-validation#init-method" target='_blank'>`init()`</a> method to give the validator our object to be validated:
+```ts {2-3}
+userValidator.init(() => ({
+    email: 'example.com',
+    username: ''
+}))
+```
+
+now let's access to the status of `username`:
+```ts {3}
+userValidator.validateItem('username') // this will execute the validation for 'username' item
+userValidator.isItemValid('username') // false
+userValidator.itemMessage('username') // This field is required!
+
+userValidator.items.email?.validate() // this will execute the validation for 'username' item
+userValidator.items.email?.valid // false
+userValidator.items.email?.message // Invalid email format
+```
 </Tabs.Tab>
 
 </Tabs>
