@@ -1,0 +1,33 @@
+import {Callout} from 'nextra/components'
+
+# Async Validation
+
+The Validator library supports asynchronous validation rules through the `onErrorAsync()` method, enabling seamless handling of asynchronous validation checks within your validation workflows.
+
+### Example of Async Validation
+
+Define async validation rules using the `onErrorAsync()` method:
+
+```typescript
+v.validator<User>({
+  id: 'userValidator',
+  items: {
+    email: v.string().required().email().onErrorAsync({
+      error: async value => {
+          return await checkEmailInUse(value); // call async function 'checkEmailInUse'
+      },
+      message: 'The email is already in use!'
+    }),
+  }
+});
+```
+
+To execute async validation rules, use the following methods:
+
+- `validateAsync(data?)` async version of [`validate()`](/ts-validation/how-to-validate-objects#validate)
+- `validateInfoAsync(data?)` async version of [`validateInfo()`](/ts-validation/how-to-validate-objects#validateInfo)
+- `validateThrowAsync(data?)` async version of [`validateThrow()`](/ts-validation/how-to-validate-objects#validateThrow)
+
+By using async validation rules and these methods (`validateAsync`, `validateInfoAsync`, and `validateThrowAsync`), you can efficiently handle asynchronous validation scenarios in your application, ensuring robust data validation and error handling. Adjust the async validation logic according to your specific application requirements for optimal performance and functionality.
+
+<Callout type='warning'>using non async validation methods as `validate()` will ignore the async validation!</Callout>
