@@ -1,0 +1,29 @@
+# `v.import()` Fn
+
+The `import()` method accepts the `ValidatorResult` (return of another validator) object and sets the validation results to the validator. This API is used to pass validation results from one validator to another, which can be useful when transferring validation results from a server to a client.
+
+- **Usage:**
+  ```typescript
+  const userValidator = v.validator<User>({
+    items: {
+      username: v.string().required(),
+      password: v.string().required()
+    },
+  }).init(() => item);
+
+  const userValidator2 = v.validator<User>({
+    items: {
+      username: v.string(),
+      password: v.string()
+    }
+  }).init(() => item2);
+
+  try {
+    userValidator.validateThrow(); // Validate the object
+  } catch (e) {
+    // Pass the validation results to the second validator
+    userValidator2.import((e as BshValidationError).results);
+  }
+  ```
+
+The `import()` method is particularly useful when you need to transfer validation results from one validator to another. It facilitates the propagation of validation errors between different parts of your application, ensuring consistent handling of validation outcomes. This method is commonly used when performing validation on the server side and relaying the results to the client for display or further processing.
