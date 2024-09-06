@@ -8,12 +8,12 @@ The Validator library supports asynchronous validation rules through the `onErro
 
 Define async validation rules using the `onErrorAsync()` method:
 
-```typescript
+```typescript  /async/ /return await/
 v.validator<User>({
   id: 'userValidator',
   items: {
     email: v.string().required().email().onErrorAsync({
-      error: async value => {
+      error: async (value) => {
           return await checkEmailInUse(value); // call async function 'checkEmailInUse'
       },
       message: 'The email is already in use!'
