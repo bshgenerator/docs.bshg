@@ -1,0 +1,88 @@
+# Multi-Language Support for Validation Messages
+
+Our validation library supports error messages in multiple languages. you can define to display error messages in the following supported languages:
+
+- Arabic (`ar`)
+- English (`en`)
+- French (`fr`)
+
+### Configuration
+
+#### Setting the Default Locale
+
+To configure your validation messages to use a local (ar, en, fr) as default, configure it during the initial setup to be sure all your validator will use this local. Here’s how:
+
+```typescript {4}
+v.configure({
+  validatorOptions: {/**/},
+  regex: {/**/},
+  local: "ar" // Set the default locale to Arabic
+});
+```
+
+#### Changing the Locale at Runtime
+
+You can change the locale dynamically at runtime using the `changeLocal(local){:ts}` method provided by the `m` module.
+
+```typescript {4}
+import {v, m} from '@bshg/validation';
+
+// Change the locale to Arabic
+m.changeLocal('ar');
+```
+
+### Example Usage
+
+Here’s a complete example demonstrating how to configure and change locales for validation messages:
+
+```typescript {7,17,26}
+import {v, m} from '@bshg/validation';
+
+// Initial configuration with French as the default locale
+v.configure({
+  validatorOptions: {/**/},
+  regex: {/**/},
+  local: "fr" // Set the default locale to French
+});
+
+// Validate some data (error messages will be in French)
+const validationResult = v.validator<{ email: string }>({
+  items: {email: v.string().required()}
+}).validateInfo();
+console.log(validationResult); // Outputs error messages in French
+
+// Change the locale to Arabic at runtime
+m.changeLocal('ar');
+
+// Validate the same data again (error messages will now be in Arabic)
+const validationResultAr = v.validator<{ email: string }>({
+  items: {email: v.string().required()}
+}).validateInfo();
+console.log(validationResultAr); // Outputs error messages in Arabic
+
+// Change the locale to English at runtime
+m.changeLocal('en');
+
+// Validate the same data again (error messages will now be in English)
+const validationResultEn = v.validator<{ email: string }>({
+  items: {email: v.string().required()}
+}).validateInfo();
+console.log(validationResultEn); // Outputs error messages in English
+```
+
+```txt
+Format d'email invalide
+صيغة البريد الإلكتروني غير صالحة
+Invalid email format
+```
+
+### Supported Locales
+
+The library currently supports the following locales:
+
+- **English** (`en`)
+- **French** (`fr`)
+- **Arabic** (`ar`)
+
+With this feature, you can switch between different languages for your validation messages, making your application more accessible to a wider audience. <br/>
+Use the configuration and runtime methods provided to customize the validation messages to suit your application's needs.

@@ -13,5 +13,6 @@
   "context-validation": "Context Validation",
   "import-fn": "v.import()",
   "error-messages-customization": "Error Messages Customization",
+  "multi-langs": "Multi-Language Support",
   "how-to-use-with-forms": "Integrate With Forms"
 }
