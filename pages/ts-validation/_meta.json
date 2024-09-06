@@ -8,6 +8,8 @@
   "how-to-validate-objects": "How To Validate?",
   "real-time-validation": "How To Validate In Real-Time?",
   "property-status-access": "Access the Validation Status",
-
+  "batch-validations": "Batch Validations",
+  "async-validation": "Async Validation",
+  "context-validation": "Context Validation",
   "how-to-use-with-forms": "Integrate With Forms"
 }
