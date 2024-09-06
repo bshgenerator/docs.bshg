@@ -1,0 +1,135 @@
+import {Callout} from 'nextra/components'
+
+# Overriding Default Values
+
+### Overriding Options Globally
+
+You can customize the default validation options globally using the `v.configure()` method. This method accepts an object where you can specify the options you want to override. Here's how you can do it:
+
+<Callout type='info'>Using this approach will make all your validator uses this configuration</Callout>
+
+```ts /validatorOptions/ /regex/ /local/
+v.configure({
+  validatorOptions: { dev: true },
+  regex: { EMAIL: /pattern/ },
+  local: 'en'
+})
+```
+
+In the configuration object:
+
+- **`validatorOptions`**: This property allows you to specify various options for validators. If you don't provide this property, the default options will be used.
+- **`regex`**: You can override or define custom regex patterns for specific validation rules.
+- **`local`**: This property sets the locale to be used for validation messages.
+
+Here are the options that you can override:
+
+| Option        | Explanation                                                                         | Default Value   |
+|---------------|-------------------------------------------------------------------------------------|-----------------|
+| `dev`         | Enables development mode which provides additional debugging information.           | `false`         |
+| `resultsType` | Defines the format of the validation results. Can be `array` or `object`.           | `'object'`      |
+
+By customizing these options, you can tailor the validation behavior according to your application's specific requirements.
+
+### Overriding Options For A Specific Validator
+
+While you can set global options using `v.configure()`, sometimes you may need to customize options for a specific validator instance. This allows you to fine-tune validation behavior according to the unique requirements of each validator.
+
+To override default options for a specific validator, provide the `options` property in the validator object during its creation.
+
+Here's an example:
+
+```ts {7-11}
+const userValidator = v.validator<User>({
+  id: "userValidator",
+  items: {
+    username: v.string().required(),
+    password: v.string().required()
+  },
+  options: { // Customize options for this validator instance
+    dev: true,
+    resultsType: "object",
+  }
+})
+```
+
+In this example:
+
+- The `dev` option is set to `true`, enabling development mode for this validator instance. This provides additional debugging information.
+- The `resultsType` option is set to `"object"`, defining the format of the validation results for this validator as an object.
+
+By overriding options for specific validators, you can precisely control their behavior to meet your application's requirements. This allows for greater flexibility and customization in validation logic.
+
+### Overriding Regex Values
+
+This library provides the flexibility to override default regex values used for validating string data, such as email addresses, phone numbers, URLs, and more. You can customize these regex patterns to better suit your specific validation requirements.
+
+#### Using `v.configure()` Method:
+
+You can override default regex values globally by using the `v.configure()` method. Provide the desired regex patterns within the `regex` property of the configuration object.
+
+```ts {3-7}
+v.configure({
+  validatorOptions: {/**/},
+  regex: {
+    EMAIL: /email@[a-z]+\.[a-z]+/i,
+    PHONE: /\+\d{1,3}\(\d{3}\)\d{3}-\d{4}/,
+    // Add or override other regex values as needed
+  }
+})
+```
+
+#### Directly in `v.regex` Container:
+
+Alternatively, you can directly modify the `v.regex` container to override default regex values. This method offers more flexibility and control over individual regex patterns.
+
+```ts {1,2}
+v.regex.EMAIL = /email@[a-z]+\.[a-z]+/i
+v.regex.PHONE = /\+\d{1,3}\(\d{3}\)\d{3}-\d{4}/
+// Add or override other regex values as needed
+```
+
+#### Default Regex Patterns:
+
+Here are the default regex patterns used for various validations:
+
+| Regex Name   | Regex Pattern                                                                                             | Used in                     |
+|:-------------|:----------------------------------------------------------------------------------------------------------|:----------------------------|
+| EMAIL        | `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`                                                                            | `v.string().email()`        |
+| PHONE        | `/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im`                                           | `v.string().phone()`        |
+| NUMERIC      | `/^[0-9]+$/`                                                                                              | `v.string().numeric()`      |
+| ALPHA        | `/^[a-zA-Z]+$/`                                                                                           | `v.string().alpha()`        |
+| ALPHANUMERIC | `/^[a-zA-Z0-9]+$/`                                                                                        | `v.string().alphanumeric()` |
+| URL          | `/^(ftp\|http\|https):\/\/[^ "]+$/`                                                                       | `v.string().url()`          |
+| DATE         | `/^\d{4}-\d{2}-\d{2}$/`                                                                                   | `v.string().date()`         |
+| TIME         | `/^([01]\d\|2[0-3]):([0-5]\d):([0-5]\d)$/`                                                                | `v.string().time()`         |
+| HEX_COLOR    | `/^#?([a-fA-F0-9]{6}\|[a-fA-F0-9]{3})$/`                                                                  | `v.string().hexColor()`     |
+| CREDIT_CARD  | `/^(?:3[47]\d{2}([\s-]?)\d{6}\1\d{5}\|(?:4\d\|5[1-5]\|65)\d{2}\d{5}\d{4}\|6011([\s-]?)\d{4}\d{4}\d{4})$/` | `v.string().creditCard()`   |
+| HTML_TAG     | `/<("[^"]*"\|'[^']*'\|[^'">])*>/`                                                                         | `v.string().htmlTag()`      |
+| BASE64       | `/[^A-Za-z0-9+/=]/`                                                                                       | `v.string().base64()`       |
+
+Feel free to modify these regex patterns according to your specific validation needs.
+
+### Overriding Localization
+
+Localization is essential for providing error messages and validation feedback in different languages or cultural contexts. This feature allows you to customize the language used for validation messages, making your application more accessible to users from diverse backgrounds.
+
+1. **Using `v.configure()` Method:**
+   When using `v.configure()`, you can specify the desired locale directly in the configuration object. This will set the default language for all validation messages generated by the library.
+
+    ```ts {4}
+    v.configure({
+      validatorOptions: {/**/},
+      regex: {/**/},
+      local: "ar" // Set the default locale to Arabic
+    })
+    ```
+
+2. **Using `m.changeLocal()` API:**
+   Alternatively, you can dynamically change the locale at runtime using the `m.changeLocal()` method provided by the library. This allows you to switch languages based on user preferences or application settings.
+
+    ```ts {1}
+    m.changeLocal("ar") // Change the locale to Arabic
+    ```
+
+By overriding the localization settings, you can ensure that validation messages are displayed in the appropriate language for your users. This enhances the user experience and helps improve accessibility for a global audience.
