@@ -1,0 +1,79 @@
+# Context Validation
+
+Context validation involves altering the validation behavior based on additional information known as `context`. This contextual information influences how validation rules are applied or interpreted, allowing you to tailor validation logic to specific scenarios or conditions.
+
+### Context Type
+
+The `v.validator<Type, TContext>()` function accepts two types: `Type` and `TContext`. The `TContext` type represents the context that will be passed to the validation rules. By default, `TContext` is of type `any`, as it is not required.
+
+### Context Validation Rules
+
+Using context validation rules allows you to apply different validation logic based on the context. Below are three methods to implement context validation rules.
+
+### Method 1: Static Context Values
+
+In this method, specific validation rules are applied based on predefined context values.<br/>
+This method compare only the values in the context<br/>
+The `ctx` accept and object to be compared with the context
+
+```ts {13,14}
+type SomeType = {
+  startDate: Date,
+}
+
+type Context = {
+  role: "admin" | "user"
+}
+
+v.validator<SomeType, Context>({
+  id: "user validator",
+  items: {
+    startDate: [
+      {ctx: {role: "admin"}, validations: v.date()}, // allow admin to provide any date
+      {ctx: {role: "user"}, validations: v.date().future()} // allow users providing only a date in future
+    ],
+  }
+})
+```
+
+### Method 2: Dynamic Context Evaluation
+
+In this method, validation rules are applied based on a dynamic evaluation of the context.<br/>
+This method allows you to do some operation on the context<br/>
+The `ctx` property accept a function that take the context as param and return a boolean
+
+```typescript {5-6}
+v.validator<SomeType, Context>({
+  id: "user validator",
+  items: {
+    startDate: [
+      {ctx: context => context.role == 'admin', validations: v.date()},
+      {ctx: context => context.role == 'user', validations: v.date().future()}
+    ],
+  }
+})
+```
+
+### Method 3: Context-Aware Validation
+
+In this method, validation rules use the context within the validation logic itself, allowing for more complex and dynamic validation scenarios.
+
+```typescript {5-13} /.onErrorCtx({/
+v.validator<SomeType, Context>({
+  id: "user validator",
+  items: {
+    startDate: v.date().onErrorCtx({
+      error: (value, context) => {
+        if (context.role == 'admin') {
+          // some validation if the role is admin
+          return true;
+        }
+        return false;
+      },
+      message: 'Start date validation failed based on role context.'
+    })
+  }
+})
+```
+
+These methods provide flexibility in defining validation logic based on various contextual factors, enhancing the adaptability and precision of the validation process.

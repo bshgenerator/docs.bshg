@@ -26,10 +26,10 @@ const config: DocsThemeConfig = {
       </span>
         </>
     },
-    primaryHue: {
-        dark: 121,
-        light: 242
-    },
+    // primaryHue: {
+    //     dark: 121,
+    //     light: 242
+    // },
     editLink: {component: () => null},
     feedback: {
         content: <><small style={

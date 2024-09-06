@@ -1,0 +1,104 @@
+import {Tabs} from 'nextra/components';
+
+# Batch Validation: validate multi objects
+
+<Tabs items={['FEATURES', 'API', 'EXAMPLE']}>
+    <Tabs.Tab>
+to validate multiple objects, the library provides `batchValidate()` and `batchValidatethrow()` methods of [`Validator`](/ts-validation/v-validator), this method accept list of objects, of the same type, to be validated.
+
+| Method                 | Args            | Description                                             |
+|------------------------|-----------------|---------------------------------------------------------|
+| `batchValidate()`      | Array of Object | return `BatchValidatorResultInfo`                       |
+| `batchValidatethrow()` | Array of Object | throw `BshBatchValidationError` in case of invalid data |
+
+```typescript
+validator.batchValidate(object1, object2, object3);
+validator.batchValidateThrow(object1, object2, object3);
+```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        ### `BatchValidatorResultInfo`
+
+```ts
+type BatchValidatorResultInfo = {
+    success: boolean, // true if all object are valid
+    results: {
+        success: boolean, // true if the object is valid
+        results?: ValidatorResult // will contain error messages of invalid property
+    }[]
+}
+```
+
+        ### `BshBatchValidationError`
+```ts
+class BshBatchValidationError extends BshgError {
+    readonly results: {
+        success: boolean, // true if the object is valid
+        results?: ValidatorResult // will contain error messages of invalid property
+    }[] // the same object returned by `BatchValidatorResultInfo()`
+}
+```
+    </Tabs.Tab>
+    <Tabs.Tab>
+        in this example we will play around this validator
+```ts
+type User = {
+    username: string
+    email: string
+}
+const userValidator = v.validator<User>({
+    id: "userValidator",
+    items: {
+        email: v.string().required().email(),
+        username: v.string().required().notEmpty(),
+    }
+});
+```
+
+### `batchValidate()`
+
+```ts
+const batchValidate = userValidator.batchValidate(
+    {email: 'email@mail.com', username: 'bshg'},
+    {email: 'email.com', username: 'bshg'},
+    {email: 'email@mail.com', username: ''},
+    {email: '', username: ''}
+);
+```
+will return this object:
+```json
+{
+  "success": false,
+  "results": [
+    { "success": true }, // first object is valid
+    {
+      "success": false,
+      "results": {
+         "items": [
+           {"field": "email", "message": "Invalid email format", "valid": false, "value": "email.com" }
+         ]
+      }
+    },
+    {
+      "success": false,
+      "results": {
+        "items": [
+          { "field": "username", "message": "This field is required!", "valid": false, "value": ""}
+        ]
+      }
+    },
+    {
+      "success": false,
+      "results": {
+        "items": [
+          {"field": "email", "message": "Invalid email format", "valid": false, "value": "" },
+          {"field": "username", "message": "This field is required!", "valid": false, "value": ""}
+        ]
+      }
+    }
+  ]
+}
+```
+    </Tabs.Tab>
+</Tabs>
+

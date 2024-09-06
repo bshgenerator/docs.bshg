@@ -7,7 +7,7 @@ import { Tabs } from 'nextra/components'
 <Tabs.Tab>
     When validating objects, ensuring they conform to the expected schema is essential. Here, we present three methods for handling validation results, each offering a different approach to error handling and result management.
 
-    ### 1. `validate()`: Simple Boolean Check
+    ### <span id='validate'>1. `validate()`: Simple Boolean Check</span>
 
     The `validate()` method returns a boolean value indicating whether the validation passed or failed. This method is straightforward and suitable when only the validation outcome is needed, without detailed information about the validation results.
 
@@ -21,7 +21,7 @@ import { Tabs } from 'nextra/components'
     }
     ```
 
-    ### 2. `validateInfo()`: Detailed Validation Results
+    ### <span id='validateInfo'>2. `validateInfo()`: Detailed Validation Results</span>
 
     The `validateInfo()` method returns an object with `success` and `results` properties. These results are of type `ValidatorResult`, providing detailed information about why the validation failed, enabling precise error handling.
 
@@ -36,7 +36,7 @@ import { Tabs } from 'nextra/components'
     }
     ```
 
-    ### 3. `validateThrow()`: Throwing Errors on Validation Failure
+    ### <span id='validateThrow'>3. `validateThrow()`: Throwing Errors on Validation Failure</span>
 
     The `validateThrow()` method throws a `BshValidationError` error if the validation fails. This method is useful for handling validation errors using exception handling mechanisms.
 
