@@ -1,0 +1,116 @@
+# Error Messages Customization
+
+The library provides a flexible way to customize the error messages of the validation results. You can set your own error messages in three main ways: [Static Message](#static-messages), [Variants of Static Message](#placeholder-messages),
+and [Dynamic Message](#dynamic-messages).
+
+### Static Messages
+
+Static messages are straightforward and do not change based on the input value or any external variables. You can provide static messages by using the optional argument of the validation methods, passing the message in the `message: string` property.
+
+```ts /{message: "your costume message."}/
+v.string().required({message: "your costume message."})
+v.number().min(10, {message: "your costume message."})
+```
+
+### Placeholder Messages
+
+The library allows you to customize error messages dynamically using placeholders. Here are the placeholders you can use:
+
+1. `%n`: Replaced by the `n` argument of the method.
+2. `%val`: Replaced with the actual value of the validated field.
+3. `%name`: Replaced with the name of the validated field.
+
+#### 1. `%n`
+
+The `%n` placeholder makes the error message more informative by incorporating method-specific parameters.
+
+```ts /%1/ /%2/
+v.number().min(10, {message: "Minimum value is %1."}) // Minimum value is 10.
+v.number().range(10, 20, {message: "Value must be between %1 and %2."}) // Value must be between 10 and 20.
+```
+
+#### 2. `%val`
+
+The `%val` placeholder provides context to the user by showing the invalid value within the error message.
+
+```ts /%val/
+const validator = v.validator<{ username: string }>({
+  items: {
+    username: v.string()
+      .min(10, {message: `'%val' must contain at least %1 characters!`})
+  },
+}).init(() => {
+  return {
+    username: "bshg"
+  }
+})
+
+validator.validate()
+console.log(validator.items.username?.message) // 'bshg' must contain at least 10 characters!
+```
+
+#### 3. `%name`
+
+The `%name` placeholder includes the field name in the error message, providing clarity and specificity.
+
+```ts /%name/
+const validator = v.validator<{ username: string }>({
+  items: {
+    username: v.string()
+      .min(10, {message: `'%name' must contain at least %1 characters!`})
+  },
+}).init(() => {
+  return {
+    username: "bshg"
+  }
+})
+
+validator.validate()
+console.log(validator.items.username?.message) // 'username' must contain at least 10 characters!
+```
+
+Using these placeholders, you can create error messages that are both informative and contextually relevant, enhancing the user experience of your application.
+
+### Dynamic Messages
+
+Dynamic messages allow you to use functions to generate error messages based on external variables or complex logic. This approach is highly flexible and can adapt to changes in the environment. For this we use `message: () => string{:ts}` property.
+
+```ts
+let role = "admin"
+
+const validator = v.validator<{ username: string }>({
+  items: {
+    username: v.string()
+      .min(10, {message: () => `invalid '${role}' username!`})
+  },
+}).init(() => {
+  return {
+    username: "bshg"
+  }
+})
+
+validator.validate()
+console.log(validator.items.username?.message) // invalid 'admin' username!
+```
+
+### Combining Placeholder and Dynamic Messages
+
+You can combine [Placeholder Message](#placeholder-messages) and [Dynamic Message](#dynamic-messages) to create sophisticated and detailed error messages.
+
+```ts
+let role = "admin"
+
+const validator = v.validator<{ username: string }>({
+  items: {
+    username: v.string()
+      .min(10, {message: () => `invalid '${role}' username! min length is %1.`})
+  },
+}).init(() => {
+  return {
+    username: "bshg"
+  }
+})
+
+validator.validate()
+console.log(validator.items.username?.message) // invalid 'admin' username! min lenght is 10.
+```
