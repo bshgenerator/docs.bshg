@@ -1,9 +1,22 @@
-import "../style.css";
+import { useEffect } from 'react';
+import Script from 'next/script';
+import '../styles/globals.css';
 
-export default function Nextra({Component, pageProps}) {
-    return (
-        <>
-            <Component {...pageProps} />
-        </>
-    );
+export default function Nextra({ Component, pageProps }) {
+  useEffect(() => {
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){window.dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-RWT3QFBPCF');
+  }, []);
+
+  return (
+    <>
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-RWT3QFBPCF"
+      />
+      <Component {...pageProps} />
+    </>
+  );
 }
