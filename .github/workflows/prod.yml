@@ -1,0 +1,33 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  docker:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push Docker image
+        run: |
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/bshg-demo:docs_${{ github.sha }} .
+          docker tag ${{ secrets.DOCKERHUB_USERNAME }}/bshg-demo:docs_${{ github.sha }} ${{ secrets.DOCKERHUB_USERNAME }}/bshg-demo:docs
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bshg-demo:docs_${{ github.sha }}
+          docker push ${{ secrets.DOCKERHUB_USERNAME }}/bshg-demo:docs
+
+  deploy:
+    needs: docker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Render Deployment for Latest Image
+        run: curl -X GET ${{ secrets.RENDER_DOCS_HOOK }}
