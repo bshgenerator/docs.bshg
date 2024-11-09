@@ -4,24 +4,18 @@
     "display": "hidden"
   },
   "docs": {
-    "type": "menu",
-    "title": "Docs",
-    "items": {
-      "all": {
-        "title": "all",
-        "href": "/docs"
-      },
-      "ts-validation": {
-        "title": "Ts Validation",
-        "href": "/ts-validation"
-      }
-    }
+    "type": "page",
+    "title": "Docs"
   },
   "blogs": {
     "type": "page",
-    "title": "Blog"
+    "title": "Blogs"
   },
   "ts-validation": {
+    "type": "page",
+    "display": "hidden"
+  },
+  "blog": {
     "type": "page",
     "display": "hidden"
   }

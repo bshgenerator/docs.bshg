@@ -1,0 +1,178 @@
+<small>08 July 2024</small>
+
+![image](/blogs/how-to-use-bshg-validation.png)
+
+# How to Use @bshg/validation: A Comprehensive Guide
+
+import {BlogAuthor} from "../../components/blog/BlogAuthor";
+
+<BlogAuthor author='bousalih'/>
+
+Welcome to the definitive guide on **@bshg/validation**, a TypeScript library crafted for seamless data validation in your projects. Whether you're developing frontend applications, backend services, or both, **@bshg/validation** offers a robust framework to ensure your data meets the required criteria efficiently and effectively.
+
+### Why Choose @bshg/validation?
+
+**@bshg/validation** stands out as a versatile solution for data validation in TypeScript projects. Here's why it's a preferred choice:
+
+| Feature                          | Description                                                                         |
+|----------------------------------|-------------------------------------------------------------------------------------|
+| __Simplicity and Efficiency__    | Easy to implement and highly performant.                                            |
+| __Customization__                | Easily tailor validation rules and error messages.                                  |
+| __Lightweight__                  | No external dependencies, ensuring fast load times.                                 |
+| __Cross-Platform Compatibility__ | Consistent validation across web, API, and mobile platforms.                        |
+| __Full-Stack Support__           | Integrate seamlessly into both frontend and backend projects.                       |
+| __Autocompletion__               | IDE support with autocompletion in VSCode for improved workflow and reduced errors. |
+
+### Installation
+
+To begin using **@bshg/validation** in your project, install it via npm or yarn:
+
+```bash
+npm install @bshg/validation
+```
+
+or
+
+```bash
+yarn add @bshg/validation
+```
+
+### Scenario
+
+You're building a registration form for a new app that collects the following data: username, password, confirmPassword, full name, age, email, and phone number. To ensure data integrity and security, you need to validate each field according to specific rules before submitting the form data.
+
+Here are the validation requirements for each field:
+
+- **Username**: Must be provided and contain only alphanumeric characters.
+- **Password**: Required, with a minimum length of 8 characters.
+- **Confirm Password**: Must match the value of the password field.
+- **Full Name**: Required and should contain only alphabetic characters and spaces.
+- **Age**: Must be a positive number.
+- **Email**: Must be a valid email address and is required.
+- **Phone**: Must be a valid phone number and is required.
+
+### Implementation
+
+First, we need to create our `User` type:
+
+```typescript
+type User = {
+    username: string
+    password: string
+    confirmPassword: string
+    fullName: string
+    age: number
+    email: string
+    phone: string
+}
+```
+
+Next, let's create the validator for the `User` type.
+
+Firstly, import `v` from the `@bshg/validation` package:
+
+```typescript
+import { v } from '@bshg/validation';
+```
+
+Then, let's create our validator and assign it to a variable for later use:
+
+```typescript
+const userValidator = v.validator<User>({
+    items: {
+        username: v.string().required().alphanumeric(), // required and should contain only alphanumeric characters
+        password: v.string().required().min(8), // required and should be at least 8 characters long 
+        confirmPassword: v.string().required(), // required
+        fullName: v.string().required().matches(/^[a-zA-Z\s]*$/), // required and should contain only alphabetic characters and spaces
+        age: v.number().positive(), // should be a positive number 
+        email: v.string().required().email(), // required and should be a valid email address
+        phone: v.string().required().phone(), // required and should be a valid phone number 
+    }
+});
+```
+
+For the `confirmPassword` field, we need to ensure it matches the `password` field. We can use the `onError()` method to add a custom validation rule:
+
+```typescript
+confirmPassword: v.string().required().onError<User>({
+    error: (val, obj) => val !== obj.password, // check if passwords match
+    message: 'Passwords do not match' // error message
+})
+```
+
+Alternatively, we can use the built-in `as<Type>(key)` method to compare the value with another field in the same object:
+
+```typescript
+confirmPassword: v.string().required().as<User>('password', { message: 'Passwords do not match' })
+```
+
+Now, after defining our validator, we can use it in our code:
+
+```typescript
+const user: User = {
+    username: 'bsh.g',
+    password: 'password',
+    confirmPassword: 'pass',
+    fullName: 'Bousalih Hamza',
+    email: 'example@ex.com',
+    phone: '1234567890',
+    age: 20
+}
+
+const result = userValidator.validateInfo(user);
+```
+
+In this example, we're assuming that we have the object ready and we need to validate it.
+
+Here is the result of the validation:
+
+```json
+{
+  "success": false,
+  "results": {
+    "items": [
+      {
+        "field": "username",
+        "message": "Must contain only alphabetic characters",
+        "valid": false,
+        "value": "bsh.g"
+      },
+      {
+        "field": "confirmPassword",
+        "message": "Passwords do not match",
+        "valid": false,
+        "value": "pass"
+      }
+    ]
+  }
+}
+```
+
+The result will give you detailed information about why the validation failed.
+
+### Validating Form Data in Real-Time
+
+To validate data as it changes, such as when a user types into a form, you can use the validator directly within event handlers:
+
+```jsx
+<input type="text" name="username"
+       onChange={() => userValidator.items?.username?.validate()}/>
+{userValidator.items?.username?.valid === false &&
+    <small>{userValidator.items?.username?.message}</small> <!-- display error message  -->
+}
+```
+
+In this example we use .validate() to validate the `username` field when the user types into the input field.
+and `.valid` and `.message` to get the validation status and error message.
+
+:::note
+Access the item status using `userValidator.items?.<field>?.<prop>`, where `prop` is a property of the `ValidatorItem` like `.validate()`, `.valid`, or `.message`.
+:::
+
+### Conclusion
+
+With **@bshg/validation**, validating data in TypeScript is not only straightforward but also powerful. Whether you're validating user input, API requests, or any other data in your application, **@bshg/validation** provides the tools you need to ensure data integrity and security.
+
+Ready to empower your projects with robust data validation? Install **@bshg/validation** today and streamline your validation process.
+
+Stay tuned for more insights and advanced techniques on leveraging **@bshg/validation** for your TypeScript projects. Happy coding!
